@@ -1,0 +1,63 @@
+ [
+      {
+        "id" : 1,
+        "question": "What is the capital of France?",
+        "options": ["Paris", "Berlin", "Madrid", "Rome"],
+        "answer" : "Paris"
+      },
+      {
+        "id" : 2,
+        "question": "Which planet is known as the Red Planet?",
+        "options": ["Earth", "Mars", "Venus", "Jupiter"],
+        "answer" : "Mars"
+      },
+      {
+        "id" : 3,
+        "question": "What is the largest mammal in the world?",
+        "options": ["Elephant", "Giraffe", "Blue Whale", "Hippopotamus"],
+        "answer" : "Elephant"
+      },
+      {
+        "id" : 4,
+        "question": "Who wrote the play 'Romeo and Juliet'?",
+        "options": ["William Shakespeare", "Charles Dickens", "Jane Austen", "Leo Tolstoy"],
+        "answer" : "William Shakespeare"
+      },
+      {
+        "id" : 5,
+        "question": "What gas do plants absorb from the atmosphere?",
+        "options": ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
+        "answer" : "Carbon Dioxide"
+      },
+      {
+        "id" : 6,
+        "question": "Which continent is the Sahara Desert located in?",
+        "options": ["North America", "Asia", "Africa", "Australia"],
+        "answer" : "Africa"
+      },
+      {
+        "id" : 7,
+        "question": "Which element has the chemical symbol 'H'?",
+        "options": ["Helium", "Hydrogen", "Hassium", "Hafnium"],
+        "answer" : "Hydrogen"
+      },
+      {
+        "id" : 8,
+        "question": "In which year did Christopher Columbus first arrive in the Americas?",
+        "options": ["1492", "1620", "1776", "1812"],
+        "answer" : "1492"
+      },
+      {
+        "id" : 9,
+        "question": "What is the largest planet in our solar system?",
+        "options": ["Earth", "Mars", "Jupiter", "Venus"],
+        "answer" : "Jupiter"
+      },
+      {
+        "id" : 10,
+        "question": "Who painted the Mona Lisa?",
+        "options": ["Pablo Picasso", "Leonardo da Vinci", "Vincent van Gogh", "Michelangelo"],
+        "answer" : "Leonardo da Vinci"
+      }
+    ]
+  

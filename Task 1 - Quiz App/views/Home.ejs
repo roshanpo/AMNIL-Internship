@@ -1,0 +1,18 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+</head>
+<body>
+    <h3>Welcome to the Quiz App!</h3>
+        <h1>Quiz Question</h1>
+        <p><%= question.question %></p>
+        <form action="/" method="post">
+            <% question.options.forEach((option) => { %>
+                <input type="radio" name="answer" required="true" value="<%= option %>"><%= option %><br>
+            <% }); %>
+            <button type="submit">Next Question</button>
+        </form>
+</body>
+</html>
