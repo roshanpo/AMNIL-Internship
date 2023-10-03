@@ -1,26 +1,21 @@
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Open+Sans:wght@400;500&family=Poppins:wght@300&family=Urbanist:wght@300&family=Work+Sans:wght@500&display=swap" rel="stylesheet">
-    <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz App</title>
+    <title>Score</title>
 </head>
-<body >
+<body>
     <div class="body">
-    <h3>Welcome to the Quiz App!</h3>
-        <h1>Quiz Question <%= question.id %></h1>
-        <p><%= question.question %></p>
-        <form action="/" method="post">
-            <% question.options.forEach((option) => { %>
-                <input type="radio" name="answer" required="true" value="<%= option %>"><%= option %><br>
-            <% }); %>
-            <button class="next" type="submit">Next Question</button>
-        </form>
-
+    <h2>Your score is : <%= score %>.<br> Wrong Answers : <%=wrong %></h2>
+    <form action="/score" method="post">
+        <input type="hidden" name="redirectTo" value="/">
+        <button class="next" type="submit">Retry</button>
+    </form>
     </div>
-        
 </body>
 </html>

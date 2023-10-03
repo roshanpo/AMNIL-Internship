@@ -3,6 +3,7 @@ const app = express();
 const fs = require('fs');
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
+app.use(express.static('public'));
 const { log } = require("console");
 
 
@@ -12,15 +13,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let currentQuestionIndex = 0;
 let score = 0;
 const questions = JSON.parse(fs.readFileSync('questions.json', 'utf8'));
+
 //console.log(questions);
 app.get('/',(req, res)=>{
     if (currentQuestionIndex < questions.length) {
         res.render('Home', { question: questions[currentQuestionIndex], currentQuestionIndex });
     } else {
-        res.send(`Quiz is over. Your score: ${score} out of ${questions.length}. Wrong Answers : ${(questions.length+1)-score}`) && res.redirect('/');
+        res.render('score',{score,wrong:questions.length-score});
+       
     }
     //res.redirect('/');
 })
+
+ app.post('/score',(req,res)=>{
+    const redirectTo = req.body.redirectTo;
+    res.redirect(redirectTo);
+ })
 
 app.post('/', (req, res) => {
     const userAnswer = req.body.answer;

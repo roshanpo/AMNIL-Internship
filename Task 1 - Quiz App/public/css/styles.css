@@ -1,0 +1,27 @@
+
+body{
+    display: flex;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 40%;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    padding: 70px;
+}
+
+.next {
+    border: 2px;
+    padding: 10px;
+    margin: 20px;
+    background-color: rgb(5, 85, 131);
+    color: white;
+    cursor: pointer;
+}
