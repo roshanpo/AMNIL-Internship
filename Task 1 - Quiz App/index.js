@@ -15,9 +15,9 @@ const questions = JSON.parse(fs.readFileSync('questions.json', 'utf8'));
 //console.log(questions);
 app.get('/',(req, res)=>{
     if (currentQuestionIndex < questions.length) {
-        res.render('Home', { question: questions[currentQuestionIndex] });
+        res.render('Home', { question: questions[currentQuestionIndex], currentQuestionIndex });
     } else {
-        res.send(`Quiz is over. Your score: ${score} out of ${questions.length}`) && res.redirect('/');
+        res.send(`Quiz is over. Your score: ${score} out of ${questions.length}. Wrong Answers : ${(questions.length+1)-score}`) && res.redirect('/');
     }
     //res.redirect('/');
 })
@@ -31,12 +31,15 @@ app.post('/', (req, res) => {
         if (userAnswer === correctAnswer) {
             score++;
         }
+        
 
         currentQuestionIndex++;
     }
 
     res.redirect('/');
 });
+
+
 
 const port = 3000;
 
