@@ -4,7 +4,7 @@ const fs = require('fs');
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
 app.use(express.static('public'));
-const { log } = require("console");
+
 
 
 app.set('view engine', 'ejs')
