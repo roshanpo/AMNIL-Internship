@@ -8,4 +8,4 @@ const productSchema = new schema({
     productDescription : {type: String},
 })
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('Product', productSchema)

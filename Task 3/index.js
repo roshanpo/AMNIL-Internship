@@ -2,6 +2,12 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const mongoose = require('mongoose');
+const User = require('./models/User');
+const Order = require('./models/Order');
+const Product = require('./models/Product');
+
+
+const indexRouter = require("./routes/index");
 
 app.use(express.json());
 
@@ -19,6 +25,11 @@ const connectDB = async ()=>{
 };
 connectDB();
 
+app.use("/api", indexRouter);
 app.get('/', (req,res)=>{
     res.send("Task 3")
+})
+
+app.get('/product',(req,res)=>{
+
 })
