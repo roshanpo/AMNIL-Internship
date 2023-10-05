@@ -8,7 +8,7 @@ userController.getAllUsers = async (req, res) => {
   return res.json({ message: "Users fetched successfully", data: users });
 };
 
-userController.create = async (req, res) => {
+userController.createUser = async (req, res) => {
   const user = {
     name: req.body.name,
     email: req.body.email
@@ -17,10 +17,24 @@ userController.create = async (req, res) => {
 const newUser = await Users.create(user);
 newUser.save();
 
-  res.send(req.body);
+  res.send(newUser);
 };
 
-userController.delete = async (req, res) => {
+userController.updateUser = async (req,res) => {
+  const user = await Users.findOne(req.params.name);
+  if (!user){
+    this.createUser;
+  }
+  const filter = req.params.id;
+  const updateUser = {
+    name : req.body.name,
+    email : req.body.email,
+  }
+  const updatedUser = await Users.findByIdAndUpdate(filter, updateUser, {new : true});
+  res.send(updatedUser)
+}
+
+userController.deleteUser = async (req, res) => {
   const user = await Users.findById(req.params.id);
   if (!user) {
       return res.send('User not found');
