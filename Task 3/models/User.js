@@ -3,9 +3,8 @@ const schema = mongoose.Schema;
 
 
 const userSchema = new schema({
-    name: {type:String},
-    email: {type:String},
-    phone : Number,
+    name : String,
+    email : String,
     role : {
         type: String,
         enum : ['viewer', 'editor', 'admin'],
@@ -17,4 +16,4 @@ const userSchema = new schema({
 }
 );
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Users', userSchema);

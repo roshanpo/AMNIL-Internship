@@ -25,11 +25,11 @@ const connectDB = async ()=>{
 };
 connectDB();
 
-app.use("/api", indexRouter);
-app.get('/', (req,res)=>{
+app.use("/", indexRouter);
+/*app.get('/', (req,res)=>{
     res.send("Task 3")
 })
 
 app.get('/product',(req,res)=>{
 
-})
+})*/
