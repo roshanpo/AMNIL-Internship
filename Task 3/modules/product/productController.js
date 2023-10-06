@@ -38,5 +38,27 @@ productController.searchProduct = async (req,res) =>{
   }
 }
 
-console.log(productController);
+productController.updateProductQuantity = async (req,res) => {
+  const query = req.params.id;
+  const find = await Product.findById(query)
+  if (!find) {
+    return res.send('Product not Found')
+  }
+  const product = {
+    quantity : req.body.quantity
+  }
+  const updatedProduct = await Product.findByIdAndUpdate(query, product, {new: true})
+  res.send(updatedProduct)
+}
+
+productController.outOfStock = async (req, res) => {
+  //const id = req.params.id
+  const products = await Product.find({quantity : {$lt: 5}})
+  if (!products) {
+    res.send("Empty!")
+  }
+  res.send(products)
+}
+
+//console.log(productController);
 module.exports = productController;
