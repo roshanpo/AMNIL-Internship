@@ -1,4 +1,5 @@
 const Store = require("../../models/Store")
+//const aggregatePaginate = require('mongoose-aggregate-paginate-v2');
 
 const storeController = {};
 
@@ -16,7 +17,11 @@ storeController.addStore = async (req,res)=>{
 }
 
 storeController.displayStore = async(req,res)=>{
-    const {longitude, latitude} = req.body;
+    const {longitude, latitude, page, limit} = req.body;
+    const options = {
+        page: page || 1,
+        limit: limit || 2, 
+      };
     const storesNearby =await Store.aggregate([
         {
         $geoNear : {
@@ -29,9 +34,15 @@ storeController.displayStore = async(req,res)=>{
           spherical: true,
         },
       },
-    ]);
+      {
+        $match: {
+          distance: { $gt: 1000 }, // Filtering out stores farther than 1000 meters
+        },
+      },
 
-    res.send(storesNearby)
+    ]);
+    const paginatedStores = await Store.aggregatePaginate(storesNearby, options)
+    res.send(paginatedStores)
 }
 
 module.exports = storeController

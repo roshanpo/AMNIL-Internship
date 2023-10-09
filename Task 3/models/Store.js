@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
+const aggregatePaginate = require('mongoose-aggregate-paginate-v2');
 const schema = mongoose.Schema;
 
 const geoSchema =new schema({
     type: {
       type: String,
-      enum: ['Point'], // You can use 'Point' for single point locations
+      enum: ['Point'], 
     },
     coordinates: {
       type: [Number], // [longitude, latitude]
@@ -21,5 +22,5 @@ const storeSchema = new schema({
     },
     location: geoSchema,
 })
-
+storeSchema.plugin(aggregatePaginate);
 module.exports = mongoose.model('Store', storeSchema)
