@@ -11,7 +11,9 @@ userController.getAllUsers = async (req, res) => {
 userController.createUser = async (req, res) => {
   const user = {
     name: req.body.name,
-    email: req.body.email
+    email: req.body.email,
+    username : req.body.username,
+    password : req.body.password
 
 }
 const newUser = await Users.create(user);
