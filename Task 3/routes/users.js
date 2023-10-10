@@ -1,14 +1,16 @@
 const userController = require("../modules/user/userController");
+const basicAuth = require('../middleware/basicAuth')
+const jwtAuth = require('../middleware/jwtAuth')
 
 const router = require("express").Router();
 
 
-router.get("/", userController.getAllUsers);
+router.get("/",jwtAuth, userController.getAllUsers);
 
 router.post("/", userController.createUser);
 
 
-router.delete("/:id", userController.deleteUser);
+router.delete("/:id",basicAuth, userController.deleteUser);
 
 router.patch("/:id", userController.updateUser)
 

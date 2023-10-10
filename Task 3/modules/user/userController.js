@@ -1,4 +1,5 @@
 const Users = require("../../models/User");
+//const basicAuth = require('../../middleware/basicAuth')
 
 const userController = {};
 
