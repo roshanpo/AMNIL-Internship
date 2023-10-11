@@ -20,6 +20,7 @@ const userSchema = new schema({
         enum : ['viewer', 'editor', 'admin'],
         default : 'viewer'
     },
+    image: Buffer
 },
 {
     timestamps : true

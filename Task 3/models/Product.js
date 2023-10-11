@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+//const Image = require('./image')
 const schema = mongoose.Schema;
 
 
@@ -8,6 +9,7 @@ const productSchema = new schema({
     productDescription : {type: String},
     productType : {type : String},
     quantity : Number,
+    image :String,
 })
 
 module.exports = mongoose.model('Product', productSchema)

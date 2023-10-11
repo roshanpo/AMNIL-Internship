@@ -1,5 +1,6 @@
 const productController = require("../modules/product/productController");
 const basicAuth = require('../middleware/basicAuth')
+const Image = require("../helpers/imageUpload")
 
 
 const router = require("express").Router();
@@ -7,7 +8,7 @@ const router = require("express").Router();
 router.get("/", productController.displayProduct);
 router.get("/outofstock", productController.outOfStock);
 router.get("/:productName", productController.searchProduct);
-router.post("/", productController.addProduct);
+router.post("/",Image, productController.addProduct);
 
 router.put("/updatequantity/:id", productController.updateProductQuantity)
 router.delete("/:id", basicAuth, productController.deleteProduct);

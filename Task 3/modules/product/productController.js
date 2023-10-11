@@ -1,4 +1,7 @@
 const Product = require("../../models/Product");
+const {ImageUrl} = require('../../helpers/imageUrl')
+const fs = require('fs');
+
 
 const productController = {};
 
@@ -9,7 +12,9 @@ productController.displayProduct = async(req,res) =>{
 
 
 productController.addProduct = async (req, res) => {
-  const newProduct = new Product({ ...req.body });
+  const file = req.file.filename;
+  const newProduct = new Product({ ...req.body, image: file });
+  newProduct.image = ImageUrl(req, newProduct.image);
 
   await newProduct.save();
 
@@ -52,7 +57,6 @@ productController.updateProductQuantity = async (req,res) => {
 }
 
 productController.outOfStock = async (req, res) => {
-  //const id = req.params.id
   const products = await Product.find({quantity : {$lt: 5}})
   if (!products) {
     res.send("Empty!")
