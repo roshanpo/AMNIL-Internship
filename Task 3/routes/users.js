@@ -8,6 +8,7 @@ const router = require("express").Router();
 router.get("/",jwtAuth, userController.getAllUsers);
 
 router.post("/", userController.createUser);
+router.post("/login", userController.loginUser);
 
 
 router.delete("/:id",basicAuth, userController.deleteUser);

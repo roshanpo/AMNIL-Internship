@@ -1,57 +1,36 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User')
+require('dotenv').config();
 //const bcrypt = require('bcrypt')
-const secretKey = 'secret'
-
-
-
-  // Find the user in the database by username
-  
 
 
 const jwtAuth = async (req,res,next) =>{
-    /*const { username, password } = req.body;
-    const user = await User.findOne({ username });
-
-  if (!user) {
-    return res.status(401).json({ error: 'Invalid credentials' });
-  }
-
-  // Verify the password using bcrypt
-  //const passwordMatch = await bcrypt.compare(password, User.password);
-
-  if (!passwordMatch) {
-    return res.status(401).json({ error: 'Invalid credentials' });
-  }*/
-
-jwt.sign({User}, secretKey, {expiresIn: '1h'}, (err,token)=>{
-    if(err){
-        console.log(err);
-    }
-    res.json({token})
-    //verifyToken();
-})
-const verifyToken = function (req,res,next){
+    try{
     const authHeader = req.headers['authorization'];
 
     if(!authHeader){
         return res.status(401).send("Unauthorized");
     }
     const bearer = authHeader.split(" ")[1];
-    req.token = bearer;
+
+    const verify  = jwt.verify(bearer, process.env.ACCESS_TOKEN_SECRET)
+
+    if (!decoded.user) {
+        return res.status(401).send('Access denied. Invalid token');
+    }
+    const validateUser = await User.findById(decoded.user.id);
+
+    if (!validateUser) {
+        return res.status(401).send('Access denied. User not found');
+    }
+
+    req.user = decoded.user;
     next();
+} 
+catch (error) {
+    res.status(401).send('Invalid token');
 }
 
-
-    //console.log(bearer);
-    /*jwt.verify(token, secretKey, (err, decoded) => {
-        if (err) {
-          return res.status(401).send('Invalid token');
-        }
-    
-        res.send(`Welcome, ${decoded.username}!`);
-      });
-      next()*/
 }
 
 

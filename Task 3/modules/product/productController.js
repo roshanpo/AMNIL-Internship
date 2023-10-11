@@ -1,6 +1,6 @@
 const Product = require("../../models/Product");
 const {ImageUrl} = require('../../helpers/imageUrl')
-const fs = require('fs');
+//const fs = require('fs');
 
 
 const productController = {};
