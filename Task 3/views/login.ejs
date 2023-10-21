@@ -1,0 +1,67 @@
+<html>
+
+<body>
+
+  <button onclick={app}>Sign In With Google</button>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js'
+
+
+    //import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.5.0/firebase-analytics.js'
+
+
+    import { getAuth, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js'
+    //import {googleAuthProvider} from 'https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js'
+
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPACb7JbIFEBbnBRtBXMGMpdeJnh3RUPo",
+      authDomain: "amnil-task.firebaseapp.com",
+      projectId: "amnil-task",
+      storageBucket: "amnil-task.appspot.com",
+      messagingSenderId: "188911892709",
+      appId: "1:188911892709:web:fd0f0f87b402659b423c0c",
+      measurementId: "G-ELWXNZJJE8"
+    }
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+
+    const provider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const userInfo = {
+          idToken: result._tokenResponse.idToken,
+        };
+
+        fetch('/login/loginData', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userInfo),
+        })
+          .then((response) => {
+            // Handle the fetch response here
+            if (response.ok) {
+              console.log('Fetch success');
+            } else {
+              console.error('Fetch failed');
+            }
+          })
+          .catch((error) => {
+            console.error('Fetch error:', error);
+          });
+
+        console.log(userInfo);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+
+
+  </script>
+</body>
+
+</html>

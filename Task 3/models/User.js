@@ -3,6 +3,29 @@ const schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *         email:
+ *           type: string
+ *         username:
+ *           type: string
+ *           unique: true
+ *           required: true
+ *         password:
+ *           type: string
+ *         role:
+ *           type: string
+ *           enum: ['viewer', 'editor', 'admin']
+ *           default: 'viewer'
+ */
+
 const userSchema = new schema({
     name : String,
     email : String,
@@ -13,7 +36,7 @@ const userSchema = new schema({
     },
     password : {
         type : String,
-        required : true
+        //required : true
     },
     role : {
         type: String,
