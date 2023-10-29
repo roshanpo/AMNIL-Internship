@@ -189,6 +189,33 @@ router.post("/",Image, productController.addProduct);
  */
 
 router.put("/updatequantity/:id", productController.updateProductQuantity)
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     summary: Delete a product by ID
+ *     description: Delete a product based on its unique ID.
+ *     tags:
+ *       - Products
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the product to delete
+ *         schema:
+ *           type: string
+ *     security:
+ *       - BasicAuth: []
+ *     responses:
+ *       200:
+ *         description: Product deleted successfully
+ *       401:
+ *         description: Unauthorized - Basic authentication failed
+ *       404:
+ *         description: Product not found
+ */
+
 router.delete("/:id", basicAuth, productController.deleteProduct);
 
 module.exports = router;
