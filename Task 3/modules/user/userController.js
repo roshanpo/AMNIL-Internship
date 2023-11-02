@@ -1,24 +1,21 @@
 const Users = require("../../models/User");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 //const basicAuth = require('../../middleware/basicAuth')
-require('dotenv').config();
-const { initializeApp } = require('firebase-admin/app');
-const admin = require('firebase-admin');
-const serviceAccount = require('../../serviceAccountKey.json');
+require("dotenv").config();
+const { initializeApp } = require("firebase-admin/app");
+const admin = require("firebase-admin");
+const serviceAccount = require("../../serviceAccountKey.json");
 
 const userController = {};
 
-
-
 userController.googleLogin = async (req, res) => {
-
   if (!admin.apps.length) {
     const firebaseAdmin = admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
     });
   }
 
-  res.render('login')
+  res.render("login");
   const loginData = req.body;
   const idToken = String(loginData.idToken);
 
@@ -26,19 +23,17 @@ userController.googleLogin = async (req, res) => {
     .auth()
     .verifyIdToken(idToken)
     .then((decodedToken) => {
-      console.log('User Verified');
-      console.log('User ID:', decodedToken.uid);
-      console.log('Email:', decodedToken.email);
-      console.log('Name: ', decodedToken.name);
-
+      console.log("User Verified");
+      console.log("User ID:", decodedToken.uid);
+      console.log("Email:", decodedToken.email);
+      console.log("Name: ", decodedToken.name);
 
       // The token is valid. You can trust this user.
     })
     .catch((error) => {
-      console.error('Token verification error:', error);
+      console.error("Token verification error:", error);
     });
-
-}
+};
 
 userController.loginUser = async (req, res) => {
   const { username, password } = req.body;
@@ -46,27 +41,28 @@ userController.loginUser = async (req, res) => {
   const user = await Users.findOne({ username });
 
   if (!user) {
-    return res.status(404).send('User not found');
+    return res.status(404).send("User not found");
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
-    return res.status(400).send('Invalid password');
+    return res.status(400).send("Invalid password");
   }
 
   const payload = {
     user: {
       id: user._id,
-      username: user.username
-    }
-  }
+      username: user.username,
+    },
+  };
 
-  const authToken = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN, { expiresIn: '1d' });
+  const authToken = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN, {
+    expiresIn: "1d",
+  });
 
   res.status(200).send({ authToken, message: "Login successful" });
-
-}
+};
 
 userController.getAllUsers = async (req, res) => {
   const users = await Users.find({});
@@ -79,26 +75,26 @@ userController.createUser = async (req, res) => {
     name: req.body.name,
     email: req.body.email,
     username: req.body.username,
-    password: req.body.password
-
-  }
- // const newUser = await Users.create(user);
+    password: req.body.password,
+  };
+  // const newUser = await Users.create(user);
   try {
     const newUser = await Users.create(user);
     res.status(201);
-    
   } catch (error) {
-    res.status(400)
+    res.status(400);
   }
-  
+
   const payload = {
     user: {
       id: newUser._id,
-      username: newUser.username
-    }
-  }
+      username: newUser.username,
+    },
+  };
 
-  const authToken = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN, { expiresIn: '1d' });
+  const authToken = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN, {
+    expiresIn: "1d",
+  });
 
   newUser.image = getImageUrl(req, newUser.image);
   res.status(201).send({ newUser, authToken });
@@ -117,19 +113,21 @@ userController.updateUser = async (req, res) => {
   const updateUser = {
     name: req.body.name,
     email: req.body.email,
-  }
-  const updatedUser = await Users.findByIdAndUpdate(filter, updateUser, { new: true });
-  res.send(updatedUser)
-}
+  };
+  const updatedUser = await Users.findByIdAndUpdate(filter, updateUser, {
+    new: true,
+  });
+  res.send(updatedUser);
+};
 
 userController.deleteUser = async (req, res) => {
   const user = await Users.findById(req.params.id);
   if (!user) {
-    return res.send('User not found');
+    return res.send("User not found");
   }
 
   await Users.findByIdAndDelete(req.params.id);
-  res.send('user deleted');
-}
+  res.send("user deleted");
+};
 
 module.exports = userController;

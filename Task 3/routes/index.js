@@ -14,4 +14,7 @@ router.use("/products", productRoutes);
 const storeRoutes = require("./stores");
 router.use("/stores", storeRoutes)
 
+const orderRoutes = require('./orders');
+router.use("/orders", orderRoutes)
+
 module.exports = router;
