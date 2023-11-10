@@ -48,7 +48,7 @@ const router = require("express").Router();
  *         description: Unauthorized. Authentication required.
  */
 
-router.get("/", jwtAuth, userController.getAllUsers);
+router.get("/", userController.getAllUsers);
 
 
 //router.get("/",jwtAuth, userController.getAllUsers);
@@ -124,7 +124,7 @@ router.post("/", userController.createUser);
  *       401:
  *         description: Authentication failed. Invalid credentials.
  */
-router.post("/login", userController.loginUser);
+//router.post("/login", userController.loginUser);
 
 /**
  * @swagger
@@ -151,7 +151,7 @@ router.post("/login", userController.loginUser);
  *       404:
  *         description: User not found.
  */
-router.delete("/:id",basicAuth, userController.deleteUser);
+router.delete("/:id", userController.deleteUser);
 
 /**
  * @swagger

@@ -2,10 +2,10 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 //import { dotenv } from "config";
-const mongoose = require('mongoose');
-const User = require('./models/User');
-const Order = require('./models/Order');
-const Product = require('./models/Product');
+//const mongoose = require('mongoose');
+//const User = require('./models/User');
+//const Order = require('./models/Order');
+//const Product = require('./models/Product');
 const path = require('path'); 
 //const ejsLint = require('ejs-lint');
 //const firebaseConfig = require('./config/firebase');
@@ -60,7 +60,7 @@ app.listen(3000, ()=>{
     console.log("Server Started");
 })
 
-const connectDB = async ()=>{
+/*const connectDB = async ()=>{
     const conn = mongoose.connect(process.env.MONGO_URI,{
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -72,7 +72,7 @@ const connectDB = async ()=>{
         })
 };
 connectDB();
-
+*/
 app.use("/", indexRouter);
 /*app.get('/', (req,res)=>{
     res.send("Task 3")

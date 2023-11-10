@@ -86,7 +86,7 @@ router.get("/", productController.displayProduct);
  *         description: Not found.
  */
 
-router.get("/outofstock", productController.outOfStock);
+//router.get("/outofstock", productController.outOfStock);
 
 /**
  * @swagger
@@ -131,7 +131,7 @@ router.get("/outofstock", productController.outOfStock);
 
 
 router.get("/:productName", productController.searchProduct);
-router.post("/",Image, productController.addProduct);
+router.post("/", productController.addProduct);
 
 /**
  * @swagger

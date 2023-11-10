@@ -1,7 +1,7 @@
-const Order = require("../../models/Order");
-const User = require("../../models/User");
-const Product = require("../../models/Product");
-const Cart = require("../../models/Cart");
+//const Order = require("../../models/Order");
+//const User = require("../../models/User");
+//const Product = require("../../models/Product");
+//const Cart = require("../../models/Cart");
 
 const mjml = require("mjml");
 const transporter = require("../../helpers/nodemailer");
@@ -9,18 +9,21 @@ const fs = require("fs");
 const path = require("path");
 const ejs = require("ejs");
 const { configDotenv } = require("dotenv");
+const pool = require("../../db/config");
 
 const orderController = {};
 
 orderController.addToCart = async (req, res) => {
-  const userId = req.body.userId;
+  const userId = parseInt(req.body.userId);
 
   const productId = `${req.body.productId}`;
   const quantity = parseInt(req.body.quantity || 1);
 
-  let cart = await Cart.findOne({ user: userId }).populate("products");
-  if (!cart) {
-    cart = new Cart({ user: userId, products: [] });
+  let cart = await pool.query("SELECT * FROM cart WHERE user_id = $1",[userId])
+  if (cart.rowCount===0) {
+    //cart = new Cart({ user: userId, products: [] });
+    pool.query("INSERT INTO cart (user_id)")
+    
   }
 
   const product = await Product.findById(productId);

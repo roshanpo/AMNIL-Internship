@@ -1,40 +1,11 @@
-const Users = require("../../models/User");
+//const Users = require("../../models/User");
 const bcrypt = require("bcrypt");
 //const basicAuth = require('../../middleware/basicAuth')
 require("dotenv").config();
-const { initializeApp } = require("firebase-admin/app");
-const admin = require("firebase-admin");
-const serviceAccount = require("../../serviceAccountKey.json");
-
+const pool = require('../../db/config')
 const userController = {};
 
-userController.googleLogin = async (req, res) => {
-  if (!admin.apps.length) {
-    const firebaseAdmin = admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-    });
-  }
-
-  res.render("login");
-  const loginData = req.body;
-  const idToken = String(loginData.idToken);
-
-  admin
-    .auth()
-    .verifyIdToken(idToken)
-    .then((decodedToken) => {
-      console.log("User Verified");
-      console.log("User ID:", decodedToken.uid);
-      console.log("Email:", decodedToken.email);
-      console.log("Name: ", decodedToken.name);
-
-      // The token is valid. You can trust this user.
-    })
-    .catch((error) => {
-      console.error("Token verification error:", error);
-    });
-};
-
+/*
 userController.loginUser = async (req, res) => {
   const { username, password } = req.body;
 
@@ -63,29 +34,40 @@ userController.loginUser = async (req, res) => {
 
   res.status(200).send({ authToken, message: "Login successful" });
 };
-
+*/
 userController.getAllUsers = async (req, res) => {
-  const users = await Users.find({});
+  const users = await pool.query('SELECT * FROM users')
+  if (users.rowCount === 0) {
+    return res.status(200).send('No users found')
+}
+else{
+  return res.send(users.rows)
+}
 
-  return res.json({ message: "Users fetched successfully", data: users });
+  //return res.json({ message: "Users fetched successfully", data: users });
 };
 
 userController.createUser = async (req, res) => {
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+
+
   const user = {
     name: req.body.name,
     email: req.body.email,
     username: req.body.username,
-    password: req.body.password,
+    password: hashedPassword,
   };
-  // const newUser = await Users.create(user);
-  try {
+  const newUser = await pool.query('INSERT INTO users (name, email, username, password) VALUES ($1, $2, $3, $4) RETURNING *', [user.name,user.email, user.username, user.password]);
+  /*try {
     const newUser = await Users.create(user);
     res.status(201);
   } catch (error) {
     res.status(400);
-  }
+  }*/
 
-  const payload = {
+  /*const payload = {
     user: {
       id: newUser._id,
       username: newUser.username,
@@ -100,34 +82,54 @@ userController.createUser = async (req, res) => {
   res.status(201).send({ newUser, authToken });
 
   newUser.save();
-
-  res.send(newUser);
+*/
+  res.send(newUser.rows);
 };
 
-userController.updateUser = async (req, res) => {
-  const user = await Users.findOne(req.params.name);
+userController.loginUser = async (req, res) => {
+  const { username, password } = req.body;
+
+  const user = await pool.query('SELECT * FROM users WHERE username=$1',[username]);
+
   if (!user) {
-    this.createUser;
+    return res.status(404).send("User not found");
   }
-  const filter = req.params.id;
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+    return res.status(400).send("Invalid password");
+  }
+}
+
+userController.updateUser = async (req, res) => {
+  const user = await pool.query('SELECT * FROM users WHERE id=$1', [req.params.id]);
+
+  if (user.rowCount === 0) {
+      return res.status(404).send('User not found');
+  }
   const updateUser = {
+    ...user.rows[0],
     name: req.body.name,
     email: req.body.email,
-  };
-  const updatedUser = await Users.findByIdAndUpdate(filter, updateUser, {
-    new: true,
-  });
-  res.send(updatedUser);
+}
+
+
+const result = await pool.query('UPDATE users SET name=$1, email=$2, WHERE id=$3 RETURNING *', [updateUser.name, updateUser.email, req.params.id]);
+
+const updatedUser = result.rows[0];
+
+res.status(200).send(updatedUser);
 };
 
 userController.deleteUser = async (req, res) => {
-  const user = await Users.findById(req.params.id);
-  if (!user) {
-    return res.send("User not found");
+  const user = await pool.query('SELECT * FROM users WHERE user_id=$1', [req.params.id]);
+  if (user.rowCount === 0) {
+      return res.status(404).send('User not found');
   }
 
-  await Users.findByIdAndDelete(req.params.id);
-  res.send("user deleted");
+  await pool.query('DELETE FROM users WHERE user_id=$1', [req.params.id]);
+  res.status(200).send('user deleted');
 };
 
 module.exports = userController;
